@@ -2,7 +2,7 @@ version: "3"
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend/101452430_comp3123_assignment2_reactjs
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -38,4 +38,5 @@ services:
     depends_on:
       - mongodb
 
-volumes: mongo-data:e
+volumes:
+  mongo-data:

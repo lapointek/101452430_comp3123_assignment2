@@ -10,7 +10,7 @@ app.use(sessionRouter);
 app.use(router);
 
 // User Signup
-router.post("/user/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const data = req.body;
 
   try {
@@ -25,7 +25,7 @@ router.post("/user/signup", async (req, res) => {
 });
 
 // User Login
-router.post("/user/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.sendStatus(400);
   const userDB = await User.findOne({ username });
