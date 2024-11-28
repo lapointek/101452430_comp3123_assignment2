@@ -27,15 +27,15 @@ router.post("/signup", async (req, res) => {
 // User Login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body);
   if (!username || !password) return res.sendStatus(400);
   const userDB = await User.findOne({ username });
   if (!userDB) return res.sendStatus(401);
   const isValid = comparePassword(password, userDB.password);
-
   if (isValid) {
     req.session.username = userDB;
-    req.session.vissted = true;
-    res.status(200).json({ message: "Login successful" });
+    req.session.visited = true;
+    res.status(200).json({ message: "Login successful." });
   } else {
     res.sendStatus(401).json({ message: "Failed Authentication!" });
   }
