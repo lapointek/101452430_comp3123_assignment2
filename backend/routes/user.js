@@ -11,16 +11,30 @@ app.use(router);
 
 // User Signup
 router.post("/signup", async (req, res) => {
-  const data = req.body;
-
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ message: "Username and password are required." });
+  }
   try {
-    data.password = await hashPassword(data.password);
-    const user = await User.create(data);
-    res.status(201).json({
-      message: `User created, user_id: ${user.id}`,
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists." });
+    }
+    const hashedPassword = await hashPassword(password);
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+    return res.status(201).json({
+      message: `User created successfully, user_id: ${newUser.id}`,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Signup Error:", error);
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -33,9 +47,16 @@ router.post("/login", async (req, res) => {
   if (!userDB) return res.sendStatus(401);
   const isValid = comparePassword(password, userDB.password);
   if (isValid) {
-    req.session.username = userDB;
+    req.session.username = userDB.username;
     req.session.visited = true;
-    res.status(200).json({ message: "Login successful." });
+    return res.status(200).json({
+      message: "Login successful.",
+      success: true,
+      user: {
+        id: userDB.id,
+        username: userDB.username,
+      },
+    });
   } else {
     res.sendStatus(401).json({ message: "Failed Authentication!" });
   }

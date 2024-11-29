@@ -7,14 +7,19 @@ const UserSchema = mongoose.Schema(
       type: ObjectId,
       default: new mongoose.Types.ObjectId(),
     },
-    username: String,
-    email: String,
-    password: String,
-    created_at: Date,
-    updated_at: Date,
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
   {
-    Timestamp: true,
+    timestamps: true,
   }
 );
 

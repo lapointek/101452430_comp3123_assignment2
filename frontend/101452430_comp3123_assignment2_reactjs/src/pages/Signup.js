@@ -15,8 +15,22 @@ function Signup() {
     }
   };
 
+  const validateInput = () => {
+    if (username.trim() === "") {
+      setMessage("Username is required.");
+      return false;
+    }
+    if (password.length < 6) {
+      setMessage("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!validateInput()) return;
 
     const user = { username, password };
 
@@ -28,8 +42,14 @@ function Signup() {
         setMessage(res.data.message);
       })
       .catch((error) => {
-        console.error(error.response.data);
-        setMessage("Error signing up");
+        console.error(error);
+        if (error.response) {
+          setMessage(error.response.data.message || "Error signing up");
+        } else if (error.request) {
+          setMessage("Network error. Please try again later.");
+        } else {
+          setMessage("An error occurred. Please try again.");
+        }
       });
   };
 
@@ -47,7 +67,7 @@ function Signup() {
           />
         </label>
         <label>
-          Password:{" "}
+          Password:
           <input
             type="password"
             name="password"

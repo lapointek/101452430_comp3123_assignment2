@@ -7,9 +7,10 @@ app.use(router);
 router.use(
   session({
     secret: "pass123",
-    saveUninitialized: false,
+    saveUninitialized: true,
     resave: false,
     cookie: {
+      secure: false,
       maxAge: 60000 * 60,
     },
   })

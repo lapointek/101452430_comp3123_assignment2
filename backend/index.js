@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const sessionRouter = require("./utils/session");
 const userRoutes = require("./routes/user");
+const employeeRoutes = require("./routes/employee");
 const app = express();
 const cors = require("cors");
 const port = 5000;
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/emp", employeeRoutes);
 
 // Start server
 app.listen(port, () => {

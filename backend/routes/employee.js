@@ -10,7 +10,7 @@ const router = express.Router();
 app.use(router);
 
 // Create Employee
-router.post("/emp/employees", async (req, res) => {
+router.post("/employees", async (req, res) => {
   const data = req.body;
   if (!req.session.username) {
     res.sendStatus(401).json({ message: "Failed to create employee" });
@@ -23,7 +23,7 @@ router.post("/emp/employees", async (req, res) => {
 });
 
 // Get List of employees
-router.get("/emp/employees", async (req, res) => {
+router.get("/employees", async (req, res) => {
   try {
     const fetchEmployees = await Employee.find();
     res.status(200).json(fetchEmployees);
@@ -33,7 +33,7 @@ router.get("/emp/employees", async (req, res) => {
 });
 
 // Fetch employee by id
-router.get("/emp/employees/:id", async (req, res) => {
+router.get("/employees/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const fetchEmployee = await Employee.findById(id);
@@ -48,7 +48,7 @@ router.get("/emp/employees/:id", async (req, res) => {
 });
 
 // Update Employee
-router.put("/emp/employees/:id", async (req, res) => {
+router.put("/employees/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const updatedData = req.body;
@@ -67,7 +67,7 @@ router.put("/emp/employees/:id", async (req, res) => {
 });
 
 // Delete Employee
-router.delete("/emp/employees/:id", async (req, res) => {
+router.delete("/employees/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const employee = await Employee.findByIdAndUpdate(id);
