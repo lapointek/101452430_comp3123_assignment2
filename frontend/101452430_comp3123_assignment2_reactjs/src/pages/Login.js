@@ -25,8 +25,9 @@ function Login() {
       .post(`http://localhost:5000/user/login`, user)
       .then((res) => {
         console.log(res);
-        console.log(res.data);
         setMessage(res.data.message);
+
+        // Check if login was successful
         if (res.data.success && res.data.user) {
           const existingUsersString = localStorage.getItem("users") || "[]";
           const existingUsers = JSON.parse(existingUsersString);
@@ -39,11 +40,16 @@ function Login() {
           }
           localStorage.setItem("user", JSON.stringify(res.data.user));
           navigate("/employeecomponents");
+        } else if (res.data.message.includes("invalid username")) {
+          setMessage("The username you entered does not exist.");
+        } else if (res.data.message.includes("incorrect password")) {
+          setMessage("The password you entered is incorrect.");
         }
       })
       .catch((error) => {
+        // General error handling
         console.error(error.response.data);
-        setMessage("Cannot login!");
+        setMessage("An error occurred, please try again.");
       });
   };
 
